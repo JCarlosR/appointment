@@ -86,16 +86,11 @@ class CreateAppointmentActivity : AppCompatActivity() {
                 call: Call<ArrayList<Specialty>>,
                 response: Response<ArrayList<Specialty>>
             ) {
-                 if( response.isSuccessful ){
-
-
-                     val specialties = response.body()
-
-                    val specialtyOptions = ArrayList<String>()
-                     specialties?.forEach {
-                        specialtyOptions.add(it.name)
+                 if (response.isSuccessful) {
+                    response.body()?.let {
+                        val specialties = it.toMutableList()
+                        spinnerSpecialties.adapter = ArrayAdapter<Specialty>(this@CreateAppointmentActivity, android.R.layout.simple_list_item_1, specialties)
                     }
-                    spinnerSpecialties.adapter = ArrayAdapter<String>( this@CreateAppointmentActivity, android.R.layout.simple_list_item_1, specialtyOptions)
                  } else {
                      Toast.makeText(this@CreateAppointmentActivity, response.isSuccessful.toString(), Toast.LENGTH_SHORT).show()
                  }
